@@ -23,7 +23,7 @@ export interface FeedOwner {
 }
 
 export interface FeedMember {
-  userId?: { _id: string; name: string; image?: string } | null;
+  user?: { _id: string; name: string; image?: string } | null;
   role: string;
 }
 
@@ -40,7 +40,7 @@ export interface FeedProject {
   description: string;
   status: string;
   tags: string[];
-  ownerId: FeedOwner | null;
+  owner: FeedOwner | null;
   members: FeedMember[];
   roles: FeedRole[];
   aiAnalysis?: {
@@ -99,7 +99,7 @@ export function ProjectFeedCard({
   const duration = project.aiAnalysis?.estimatedDuration;
 
   const visibleMembers = project.members
-    .filter((m) => m.userId)
+    .filter((m) => m.user)
     .slice(0, 4);
   const extraMembers = Math.max(0, project.members.length - visibleMembers.length);
 
@@ -123,9 +123,9 @@ export function ProjectFeedCard({
         {visibleMembers.length > 0 && (
           <AvatarGroup className="shrink-0">
             {visibleMembers.map((m) => (
-              <Avatar key={m.userId?._id} size="sm">
-                {m.userId?.image && <AvatarImage src={m.userId.image} />}
-                <AvatarFallback>{initials(m.userId?.name)}</AvatarFallback>
+              <Avatar key={m.user?._id} size="sm">
+                {m.user?.image && <AvatarImage src={m.user.image} />}
+                <AvatarFallback>{initials(m.user?.name)}</AvatarFallback>
               </Avatar>
             ))}
             {extraMembers > 0 && (
@@ -140,16 +140,16 @@ export function ProjectFeedCard({
       </p>
 
       {/* owner */}
-      {project.ownerId && (
+      {project.owner && (
         <div className="flex items-center gap-2 text-xs text-text-muted">
           <Avatar size="sm">
-            {project.ownerId.image && (
-              <AvatarImage src={project.ownerId.image} />
+            {project.owner.image && (
+              <AvatarImage src={project.owner.image} />
             )}
-            <AvatarFallback>{initials(project.ownerId.name)}</AvatarFallback>
+            <AvatarFallback>{initials(project.owner.name)}</AvatarFallback>
           </Avatar>
           <span>
-            by <span className="text-text">{project.ownerId.name}</span>
+            by <span className="text-text">{project.owner.name}</span>
           </span>
         </div>
       )}

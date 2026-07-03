@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import Sidebar from "@/components/layout/Sidebar";
+import { CommandPalette } from "@/components/shared/CommandPalette";
 import MobileTopBar from "@/components/layout/MobileTopBar";
 
 export default async function AppLayout({
@@ -15,6 +16,7 @@ export default async function AppLayout({
 
   return (
     <div className="flex min-h-dvh bg-background">
+      <CommandPalette />
       {/* Desktop sidebar — sticky full height */}
       <div className="sticky top-0 hidden h-dvh shrink-0 md:block">
         <Sidebar />

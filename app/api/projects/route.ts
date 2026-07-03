@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     if (status && status !== "all") filter.status = status;
     if (skill) filter["roles.requiredSkills"] = skill;
 
-    const [total, projects] = await Promise.all([
+    const [total, dbProjects] = await Promise.all([
       Project.countDocuments(filter),
       Project.find(filter)
         .populate("ownerId", "name image primaryDomain")
@@ -41,6 +41,22 @@ export async function GET(request: NextRequest) {
         .limit(limit)
         .lean(),
     ]);
+
+    // Map Mongoose populated fields to frontend expected fields
+    const projects = dbProjects.map((p: any) => {
+      const { ownerId, ...rest } = p;
+      return {
+        ...rest,
+        owner: ownerId,
+        members: (p.members || []).map((m: any) => {
+          const { userId, ...mRest } = m;
+          return {
+            ...mRest,
+            user: userId,
+          };
+        }),
+      };
+    });
 
     return successResponse({
       projects,

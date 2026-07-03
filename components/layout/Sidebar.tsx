@@ -129,6 +129,12 @@ export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
 
         <div className="my-3 h-px bg-border" />
 
+        <div className="mb-3 flex items-center justify-center text-xs text-text-muted">
+          <span>Press</span>
+          <kbd className="mx-1 rounded border border-border bg-surface-2 px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
+          <span>to search</span>
+        </div>
+
         <div className="flex items-center gap-3">
           {session?.user?.image ? (
             // eslint-disable-next-line @next/next/no-img-element

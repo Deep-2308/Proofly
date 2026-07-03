@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist } from "next/font/google";
 import { Providers } from "@/components/providers";
+import { LenisProvider } from "@/components/providers/LenisProvider";
 import "./globals.css";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
-  axes: ["opsz", "wght"],
+  axes: ["opsz"],
   display: "swap",
 });
 
@@ -78,8 +79,10 @@ export default function RootLayout({
       className={`dark ${fraunces.variable} ${geistSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-[var(--color-ember)] selection:text-[var(--color-canvas)]">
-        <FilmGrain />
-        <Providers>{children}</Providers>
+        <LenisProvider>
+          <FilmGrain />
+          <Providers>{children}</Providers>
+        </LenisProvider>
       </body>
     </html>
   );
