@@ -3,7 +3,36 @@ import { ZodError } from "zod";
 import { auth } from "@/auth";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
-import { onboardingProfileSchema } from "@/lib/validations";
+import { z } from "zod";
+import { PRIMARY_DOMAINS } from "@/lib/constants";
+
+const optionalUrlSchema = z
+  .string()
+  .optional()
+  .or(z.literal(""))
+  .transform((val) => {
+    if (!val) return val;
+    return /^https?:\/\//i.test(val) ? val : `https://${val}`;
+  })
+  .refine((val) => {
+    if (!val) return true;
+    try {
+      new URL(val);
+      return true;
+    } catch {
+      return false;
+    }
+  }, "Please enter a valid URL");
+
+const userPatchSchema = z.object({
+  name: z.string().min(2).max(100).optional(),
+  primaryDomain: z.enum(PRIMARY_DOMAINS).optional(),
+  selectedSkills: z.array(z.string()).min(1).max(8).optional(),
+  bio: z.string().max(300).optional().or(z.literal("")),
+  githubUrl: optionalUrlSchema,
+  portfolioUrl: optionalUrlSchema,
+  onboardingCompleted: z.boolean().optional(),
+});
 
 export async function GET() {
   const session = await auth();
@@ -28,7 +57,7 @@ export async function PATCH(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const data = onboardingProfileSchema.parse(body);
+    const data = userPatchSchema.parse(body);
 
     await dbConnect();
 
@@ -37,8 +66,9 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    user.primaryDomain = data.primaryDomain;
-    user.selectedSkills = data.selectedSkills;
+    if (data.name !== undefined) user.name = data.name;
+    if (data.primaryDomain !== undefined) user.primaryDomain = data.primaryDomain;
+    if (data.selectedSkills !== undefined) user.selectedSkills = data.selectedSkills;
     if (data.bio !== undefined) user.bio = data.bio;
     if (data.githubUrl !== undefined) user.githubUrl = data.githubUrl;
     if (data.portfolioUrl !== undefined) user.portfolioUrl = data.portfolioUrl;

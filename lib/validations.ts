@@ -67,6 +67,17 @@ export const onboardingProfileSchema = z.object({
   onboardingCompleted: z.boolean().optional(),
 });
 
+export const profileSettingsSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(100).optional(),
+  bio: z
+    .string()
+    .max(300, "Bio must be under 300 characters")
+    .optional()
+    .or(z.literal("")),
+  githubUrl: optionalUrlSchema,
+  portfolioUrl: optionalUrlSchema,
+});
+
 // ─── Onboarding Validations ─────────────────────────────────────────────────
 
 export const onboardingSchema = z.object({
@@ -125,3 +136,4 @@ export type ProjectInput = z.infer<typeof projectSchema>;
 export type ChallengeGenerateInput = z.infer<typeof challengeGenerateSchema>;
 export type ChallengeSubmitInput = z.infer<typeof challengeSubmitSchema>;
 export type ApplicationInput = z.infer<typeof applicationSchema>;
+export type ProfileSettingsInput = z.infer<typeof profileSettingsSchema>;
