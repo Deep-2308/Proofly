@@ -23,6 +23,7 @@ import type {
   ProfileBadge,
   ProfileProject,
 } from "@/lib/profile";
+import { BadgeCard } from "@/components/shared/BadgeCard";
 
 const DIFFICULTY_BORDER: Record<string, string> = {
   beginner: "border-border",
@@ -205,7 +206,16 @@ export function ProfileExperience({
             className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
           >
             {badges.map((badge) => (
-              <BadgeCard key={badge.id} badge={badge} variants={item} />
+              <motion.div key={badge.id} variants={item}>
+                <BadgeCard 
+                  skillName={badge.skillName}
+                  domain={badge.domain}
+                  difficulty={badge.difficulty || "beginner"}
+                  score={badge.score}
+                  badgeSummary={badge.badgeSummary || ""}
+                  issuedAt={badge.issuedAt}
+                />
+              </motion.div>
             ))}
           </motion.div>
         ) : (
@@ -264,84 +274,6 @@ export function ProfileExperience({
         )}
       </section>
     </motion.div>
-  );
-}
-
-// ─── Badge card ────────────────────────────────────────────────────────────────
-function BadgeCard({
-  badge,
-  variants,
-}: {
-  badge: ProfileBadge;
-  variants: Variants;
-}) {
-  const difficulty = badge.difficulty ?? "beginner";
-  const sc = scoreColor(badge.score);
-
-  return (
-    <motion.article
-      variants={variants}
-      layout
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 300, damping: 24 }}
-      className={cn(
-        "group relative overflow-hidden rounded-2xl border bg-surface/80 p-5 backdrop-blur-sm transition-colors",
-        DIFFICULTY_BORDER[difficulty]
-      )}
-    >
-      <div className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full bg-primary/5 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
-
-      {/* verified chip */}
-      <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full border border-success/30 bg-success/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-success">
-        <ShieldCheck className="size-3" />
-        Verified
-      </span>
-
-      <div className="relative z-10 space-y-3">
-        <div className="flex flex-wrap items-center gap-1.5">
-          <span
-            className={cn(
-              "rounded-full px-2 py-0.5 text-[11px] font-medium capitalize",
-              DIFFICULTY_PILL[difficulty]
-            )}
-          >
-            {difficulty}
-          </span>
-          <span className="rounded-full border border-border bg-surface-2 px-2 py-0.5 text-[11px] font-medium text-text-muted">
-            {badge.domain}
-          </span>
-        </div>
-
-        <h3 className="pr-16 font-heading text-xl font-bold tracking-tight text-text">
-          {badge.skillName}
-        </h3>
-
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-text-muted">Score</span>
-            <span className={cn("font-semibold tabular-nums", sc.text)}>
-              {badge.score} / 100
-            </span>
-          </div>
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
-            <div
-              className={cn("h-full rounded-full", sc.bar)}
-              style={{ width: `${Math.min(badge.score, 100)}%` }}
-            />
-          </div>
-        </div>
-
-        {badge.badgeSummary && (
-          <p className="line-clamp-2 text-sm italic leading-relaxed text-text-muted">
-            “{badge.badgeSummary}”
-          </p>
-        )}
-
-        <p className="border-t border-border pt-3 text-xs text-text-muted/70">
-          Issued {formatDate(badge.issuedAt)}
-        </p>
-      </div>
-    </motion.article>
   );
 }
 

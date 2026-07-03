@@ -22,6 +22,7 @@ import User from "@/models/User";
 import { StaggerContainer } from "@/components/shared/StaggerContainer";
 import type { Difficulty } from "@/models/Badge";
 import type { ProjectStatus } from "@/models/Project";
+import { BadgeCard } from "@/components/shared/BadgeCard";
 
 void User; // ensure model registered for populate
 
@@ -29,8 +30,11 @@ void User; // ensure model registered for populate
 type LeanBadge = {
   _id: Types.ObjectId;
   skillName: string;
+  domain?: string;
   difficulty?: Difficulty;
   score: number;
+  badgeSummary?: string;
+  createdAt?: Date;
 };
 type LeanProject = {
   _id: Types.ObjectId;
@@ -147,37 +151,15 @@ export default async function DashboardPage() {
         {badgeCount > 0 ? (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {badges.slice(0, 6).map((b) => (
-              <article
+              <BadgeCard
                 key={b._id.toString()}
-                className="space-y-3 rounded-xl border border-border bg-surface p-5 transition-colors hover:border-primary/40"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-heading text-base font-semibold text-text">
-                    {b.skillName}
-                  </h3>
-                  <span
-                    className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium capitalize ${diffPill(b.difficulty)}`}
-                  >
-                    {b.difficulty ?? "—"}
-                  </span>
-                </div>
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-text-muted">Score</span>
-                    <span className="font-semibold text-text">{b.score}/100</span>
-                  </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
-                    <div
-                      className={`h-full rounded-full ${scoreBar(b.score)}`}
-                      style={{ width: `${Math.min(b.score, 100)}%` }}
-                    />
-                  </div>
-                </div>
-                <span className="inline-flex items-center gap-1 text-xs font-medium text-success">
-                  <CheckCircle className="size-3.5" />
-                  Verified
-                </span>
-              </article>
+                skillName={b.skillName}
+                domain={b.domain || ""}
+                difficulty={b.difficulty || "beginner"}
+                score={b.score}
+                badgeSummary={b.badgeSummary || ""}
+                issuedAt={b.createdAt || new Date()}
+              />
             ))}
           </div>
         ) : (

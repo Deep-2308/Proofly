@@ -28,6 +28,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScoreRing } from "@/components/shared/ScoreRing";
+import { ScoreRing } from "@/components/shared/ScoreRing";
+import { BadgeCard as SharedBadgeCard } from "@/components/shared/BadgeCard";
+import { ConfettiTrigger } from "@/components/shared/ConfettiTrigger";
 
 export interface ResultMetric {
   label: string;
@@ -87,6 +90,7 @@ export function ResultExperience({ data }: { data: ResultData }) {
       animate="show"
       className="mx-auto max-w-6xl space-y-6 p-6 md:p-8"
     >
+      <ConfettiTrigger fire={data.passed} />
       <Verdict data={data} item={item} />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
@@ -337,97 +341,34 @@ function BadgeCard({
   }
 
   return (
-    <motion.section variants={item}>
-      {/* gradient border wrapper */}
-      <motion.div
-        initial={reduce ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0 }}
-        animate={{
-          scale: 1,
-          opacity: 1,
-          boxShadow: reduce
-            ? undefined
-            : [
-                "0 0 0px color-mix(in oklab, var(--primary) 0%, transparent)",
-                "0 0 44px color-mix(in oklab, var(--primary) 45%, transparent)",
-                "0 0 18px color-mix(in oklab, var(--primary) 22%, transparent)",
-              ],
-        }}
-        transition={{
-          scale: { type: "spring", stiffness: 200, damping: 18, delay: 0.25 },
-          opacity: { duration: 0.3, delay: 0.25 },
-          boxShadow: {
-            duration: 1.4,
-            times: [0, 0.5, 1],
-            repeat: 2,
-            ease: "easeInOut",
-            delay: 0.5,
-          },
-        }}
-        className="rounded-3xl bg-[linear-gradient(135deg,#5eead4,#22d3ee,#0891b2)] p-px"
-      >
-        <div className="relative overflow-hidden rounded-[calc(1.5rem-1px)] bg-surface p-7 text-center">
-          {/* rotated VERIFIED watermark */}
-          <span
-            aria-hidden
-            className="pointer-events-none absolute -right-6 top-10 -rotate-90 select-none font-heading text-5xl font-extrabold uppercase tracking-[0.3em] text-primary/[0.06]"
-          >
-            Verified
-          </span>
+    <motion.section variants={item} className="flex flex-col gap-5">
+      <SharedBadgeCard
+        skillName={data.skillName}
+        domain={data.domain}
+        difficulty={data.difficulty}
+        score={data.score}
+        badgeSummary={data.badgeSummary}
+        issuedAt={data.issuedAt}
+      />
 
-          {/* wordmark */}
-          <div className="flex items-center justify-center gap-2 text-text-muted">
-            <ShieldCheck className="size-4 text-primary" />
-            <span className="text-xs font-semibold uppercase tracking-widest">
-              SkillSync
-            </span>
-          </div>
-
-          {/* skill + difficulty */}
-          <h3 className="mt-5 font-heading text-3xl font-bold tracking-tight text-text">
-            {data.skillName}
-          </h3>
-          <span className="mt-2 inline-block rounded-full border border-primary/30 bg-primary/10 px-3 py-0.5 text-[11px] font-semibold uppercase tracking-widest text-primary">
-            {capitalize(data.difficulty)}
-          </span>
-
-          {/* score ring */}
-          <div className="mt-6 flex justify-center">
-            <ScoreRing score={data.score} size={168} delay={0.5} variant="pass" />
-          </div>
-
-          {/* summary */}
-          <p className="mt-6 text-sm italic leading-relaxed text-text-muted">
-            “{data.badgeSummary}”
-          </p>
-
-          {/* meta */}
-          <div className="mt-6 flex items-center justify-between border-t border-border pt-4 text-xs">
-            <span className="text-text-muted">Issued</span>
-            <span className="font-semibold text-text">
-              {formatDate(data.issuedAt)}
-            </span>
-          </div>
-
-          {/* actions */}
-          <div className="mt-5 flex flex-col gap-2.5">
-            <Button asChild size="lg" className="h-11 w-full font-semibold">
-              <Link href={profileId ? `/profile/${profileId}` : "/dashboard"}>
-                View on Profile
-              </Link>
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="lg"
-              onClick={handleShare}
-              className="h-11 w-full gap-2"
-            >
-              <Share2 className="size-4" />
-              Share Achievement
-            </Button>
-          </div>
-        </div>
-      </motion.div>
+      {/* actions */}
+      <div className="flex flex-col gap-2.5">
+        <Button asChild size="lg" className="h-11 w-full font-semibold">
+          <Link href={profileId ? `/profile/${profileId}` : "/dashboard"}>
+            View on Profile
+          </Link>
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="lg"
+          onClick={handleShare}
+          className="h-11 w-full gap-2"
+        >
+          <Share2 className="size-4" />
+          Share Achievement
+        </Button>
+      </div>
     </motion.section>
   );
 }
