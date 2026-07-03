@@ -32,10 +32,10 @@ export class GeminiProvider implements AIProvider {
       const response = await this.client.models.generateContent({
         model: request.model,
         contents: [
-          { role: "system", parts: [{ text: request.systemPrompt }] },
           { role: "user", parts: [{ text: request.userPrompt }] },
         ],
         config: {
+          systemInstruction: request.systemPrompt,
           temperature: request.temperature,
           maxOutputTokens: request.maxTokens,
           responseMimeType: request.responseMimeType,
