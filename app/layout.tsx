@@ -45,6 +45,8 @@ export const metadata: Metadata = {
     siteName: "SkillSync",
     title: TITLE,
     description: DESCRIPTION,
+    images: ["/opengraph-image"],
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",

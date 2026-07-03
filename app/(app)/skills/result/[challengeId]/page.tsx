@@ -97,17 +97,6 @@ export default async function ResultPage({ params }: PageProps) {
     }
   }
 
-  const metrics: ResultData["metrics"] = [
-    {
-      label: "Completeness",
-      value: breakdown.completeness,
-      max: METRIC_MAX.completeness,
-    },
-    { label: "Quality", value: breakdown.quality, max: METRIC_MAX.quality },
-    { label: "Accuracy", value: breakdown.accuracy, max: METRIC_MAX.accuracy },
-    { label: "Depth", value: breakdown.depth, max: METRIC_MAX.depth },
-  ];
-
   const data: ResultData = {
     challengeId: challenge._id.toString(),
     skillName: challenge.skillName,
@@ -115,7 +104,7 @@ export default async function ResultPage({ params }: PageProps) {
     difficulty: challenge.difficulty,
     score: evaluation.score,
     passed: evaluation.passed,
-    metrics,
+    scoreBreakdown: breakdown,
     overallFeedback: evaluation.overallFeedback,
     strengths: evaluation.strengths,
     improvements: evaluation.improvements,

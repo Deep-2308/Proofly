@@ -28,15 +28,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScoreRing } from "@/components/shared/ScoreRing";
-import { ScoreRing } from "@/components/shared/ScoreRing";
 import { BadgeCard as SharedBadgeCard } from "@/components/shared/BadgeCard";
 import { ConfettiTrigger } from "@/components/shared/ConfettiTrigger";
-
-export interface ResultMetric {
-  label: string;
-  value: number;
-  max: number;
-}
+import { ScoreRadarChart } from "@/components/shared/ScoreRadarChart";
 
 export interface ResultData {
   challengeId: string;
@@ -45,7 +39,12 @@ export interface ResultData {
   difficulty: "beginner" | "intermediate" | "advanced";
   score: number;
   passed: boolean;
-  metrics: ResultMetric[];
+  scoreBreakdown: {
+    completeness: number;
+    quality: number;
+    accuracy: number;
+    depth: number;
+  };
   overallFeedback: string;
   strengths: string[];
   improvements: string[];
@@ -96,7 +95,7 @@ export function ResultExperience({ data }: { data: ResultData }) {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Left column — 60% */}
         <div className="space-y-6 lg:col-span-7">
-          <ScoreBreakdown metrics={data.metrics} item={item} reduce={!!reduce} />
+          <ScoreBreakdown scoreBreakdown={data.scoreBreakdown} item={item} />
           <Feedback data={data} item={item} />
         </div>
 
@@ -195,13 +194,16 @@ function Verdict({ data, item }: { data: ResultData; item: Variants }) {
 
 // ─── Score breakdown ─────────────────────────────────────────────────────────
 function ScoreBreakdown({
-  metrics,
+  scoreBreakdown,
   item,
-  reduce,
 }: {
-  metrics: ResultMetric[];
+  scoreBreakdown: {
+    completeness: number;
+    quality: number;
+    accuracy: number;
+    depth: number;
+  };
   item: Variants;
-  reduce: boolean;
 }) {
   return (
     <motion.section
@@ -212,47 +214,8 @@ function ScoreBreakdown({
         <BarChart3 className="size-5 text-primary" />
         Score Breakdown
       </h2>
-      <div className="space-y-5">
-        {metrics.map((m, i) => (
-          <MetricBar key={m.label} metric={m} index={i} reduce={reduce} />
-        ))}
-      </div>
+      <ScoreRadarChart scoreBreakdown={scoreBreakdown} />
     </motion.section>
-  );
-}
-
-function MetricBar({
-  metric,
-  index,
-  reduce,
-}: {
-  metric: ResultMetric;
-  index: number;
-  reduce: boolean;
-}) {
-  const target = Math.round((metric.value / metric.max) * 100);
-  const [value, setValue] = useState(reduce ? target : 0);
-
-  useEffect(() => {
-    if (reduce) return;
-    const delay = 350 + index * 120;
-    const timer = setTimeout(() => setValue(target), delay);
-    return () => clearTimeout(timer);
-  }, [target, index, reduce]);
-
-  return (
-    <div>
-      <div className="mb-2 flex items-end justify-between">
-        <span className="text-sm font-medium text-text">{metric.label}</span>
-        <span className="text-xs font-semibold tabular-nums text-primary">
-          {metric.value}/{metric.max}
-        </span>
-      </div>
-      <Progress
-        value={value}
-        className="h-2 bg-surface-2 [&_[data-slot=progress-indicator]]:bg-[linear-gradient(90deg,#5eead4,#22d3ee)] [&_[data-slot=progress-indicator]]:shadow-[0_0_10px_color-mix(in_oklab,var(--primary)_60%,transparent)] [&_[data-slot=progress-indicator]]:!duration-700"
-      />
-    </div>
   );
 }
 
