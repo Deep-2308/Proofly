@@ -93,8 +93,13 @@ The aesthetic is a dark-mode-first "Midnight Craft" design system — Syne displ
 - Public profile (badges, projects, avg score) with private challenge-attempt stats for the owner
 - Dashboard with greeting, stats (badges / projects / avg score), skill passport, active projects, quick actions, and recommended projects
 
-### 🎨 UX
+### 🎨 UX & Developer Experience
 - Reusable scroll-reveal + stagger animation primitives, skeleton loading states, responsive sidebar with mobile sheet, and `prefers-reduced-motion` support
+- **Global Command Palette**: Instant navigation and contextual actions via `Cmd+K`.
+- **Smooth Scrolling**: Momentum-based lenis scroll for a premium feel.
+- **Dynamic Visualization**: `recharts` radar charts and `canvas-confetti` success celebrations.
+- **SEO & Social**: Edge-generated OpenGraph images for dynamic link previews.
+- **Resilience**: Beautifully themed global Error Boundaries (404/500).
 
 ---
 
@@ -133,6 +138,10 @@ docs/
 | Tailwind CSS | `^4` | Utility-first styling |
 | Framer Motion | `^12` | Animations & micro-interactions |
 | Radix UI / shadcn | `^1.6` / `^4` | Accessible UI primitives |
+| cmdk | `^1.0.0` | Global Command Palette |
+| lenis | `^1.1` | Momentum-based smooth scrolling |
+| recharts | `^2.15` | Interactive radar charts for skill evaluation |
+| canvas-confetti | `^1.9.3` | Success animations |
 | lucide-react | `^1.21` | Icon set |
 | sonner | `^2` | Toast notifications |
 | next-themes / tw-animate-css | — | Theming & animation utilities |
@@ -668,14 +677,17 @@ graph LR
 | Area | Status |
 |---|---|
 | Auth (Credentials + Google), onboarding gate | ✅ Implemented |
-| Challenge generate + evaluate (Claude) | ✅ Implemented |
+| Challenge generate + evaluate (Gemini/Groq) | ✅ Implemented |
 | Badges & Skill Passport | ✅ Implemented |
 | Project create / discover / detail / apply | ✅ Implemented |
 | Project workspace (Kanban tasks) | ✅ Implemented |
 | Project analysis (Gemini) | ✅ Implemented |
 | Profiles + dashboard | ✅ Implemented |
 | Demo seed script | ✅ Implemented |
-| `/projects/my` (linked in sidebar) | 🚧 Planned — route not yet created |
+| `/projects/my` (linked in sidebar) | ✅ Implemented |
+| Global Command Palette (Cmd+K) | ✅ Implemented |
+| Custom Error Boundaries (404/500) | ✅ Implemented |
+| Dynamic OpenGraph Images | ✅ Implemented |
 | Password reset (`/forgot-password` + Resend) | 🚧 In Progress — page exists; email flow not confirmed |
 | Cloudinary image upload UI | 🚧 Planned — hosting configured, upload UX not built |
 
@@ -683,13 +695,11 @@ graph LR
 
 ## 🌱 Future Improvements
 
-- Build the `/projects/my` page so the sidebar link resolves.
 - Finish the password-reset flow end-to-end with Resend.
 - Add Cloudinary upload UI for avatars/proof artifacts.
 - Centralized API rate limiting and request logging/metrics.
 - Owner-only visibility for project `applications` in the detail response.
 - Automated tests (unit for `lib/`, integration for API routes) and CI.
-- Generated OG image (`opengraph-image.tsx`) for richer social previews.
 
 ---
 
