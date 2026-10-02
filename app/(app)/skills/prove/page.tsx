@@ -256,7 +256,7 @@ function ProveSkillsInner() {
               Prove a skill
             </h1>
             <p className="mt-2 text-sm text-text-muted">
-              Pick a skill and let Claude craft a real-world challenge to verify
+              Pick a skill and let AI craft a real-world challenge to verify
               your expertise.
             </p>
           </header>
@@ -411,7 +411,7 @@ function LoadingState() {
 
       <div className="flex items-center justify-center gap-2 text-sm text-ai">
         <Sparkles className="size-4" />
-        <span>Claude AI is generating your unique challenge</span>
+        <span>AI is generating your unique challenge</span>
         <PulsingDots />
       </div>
     </div>
@@ -663,7 +663,7 @@ function ChallengeView({
                 {submitting ? (
                   <>
                     <Loader2 className="size-4 animate-spin" />
-                    Claude is evaluating your submission...
+                    AI is evaluating your submission...
                   </>
                 ) : (
                   <>

@@ -78,9 +78,9 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`dark ${fraunces.variable} ${geistSans.variable} h-full antialiased`}
+      className={`dark ${fraunces.variable} ${geistSans.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-[var(--color-ember)] selection:text-[var(--color-canvas)]">
+      <body className="min-h-screen flex flex-col bg-background text-foreground font-sans selection:bg-[var(--color-ember)] selection:text-[var(--color-canvas)]">
         <LenisProvider>
           <FilmGrain />
           <Providers>{children}</Providers>
