@@ -14,6 +14,7 @@ import {
   Link2,
   Loader2,
   AlertCircle,
+  Code2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -26,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { SkillSelectGrid } from "@/components/shared/SkillSelectGrid";
+import { LiveSandbox } from "@/components/skills/LiveSandbox";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 type Difficulty = "beginner" | "intermediate" | "advanced";
@@ -518,6 +520,8 @@ function ChallengeView({
   submitting,
   onSubmit,
 }: ChallengeViewProps) {
+  const [useSandbox, setUseSandbox] = useState(false);
+
   return (
     <div className="mx-auto w-full max-w-2xl">
       <article className="relative rounded-xl border border-border bg-surface/80 p-6 shadow-2xl backdrop-blur-sm md:p-8">
@@ -611,17 +615,49 @@ function ChallengeView({
 
             {/* Submission area */}
             <div className="space-y-4 border-t border-border pt-6">
-              <h3 className="font-heading text-lg font-semibold text-text">
-                Your response
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="font-heading text-lg font-semibold text-text">
+                  Your response
+                </h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setUseSandbox(!useSandbox)}
+                  className="gap-2 text-xs"
+                >
+                  {useSandbox ? (
+                    <>
+                      <FileText className="size-3.5" />
+                      Use Written Response
+                    </>
+                  ) : (
+                    <>
+                      <Code2 className="size-3.5" />
+                      Use Live Code Sandbox
+                    </>
+                  )}
+                </Button>
+              </div>
 
-              <Textarea
-                value={responseText}
-                onChange={(e) => onResponseChange(e.target.value)}
-                placeholder="Write your response here... describe your approach, reasoning, decisions, and outcomes in detail."
-                disabled={submitting}
-                className="min-h-44 resize-y bg-surface text-sm leading-relaxed"
-              />
+              {useSandbox ? (
+                <div className="space-y-2">
+                  <p className="text-xs text-text-muted">
+                    Write your code below. It will be automatically submitted as your response.
+                  </p>
+                  <LiveSandbox
+                    template="react"
+                    onCodeChange={onResponseChange}
+                  />
+                </div>
+              ) : (
+                <Textarea
+                  value={responseText}
+                  onChange={(e) => onResponseChange(e.target.value)}
+                  placeholder="Write your response here... describe your approach, reasoning, decisions, and outcomes in detail."
+                  disabled={submitting}
+                  className="min-h-44 resize-y bg-surface text-sm leading-relaxed"
+                />
+              )}
 
               <div className="relative">
                 <Link2 className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-text-muted" />

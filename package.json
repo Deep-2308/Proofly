@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.2",
+    "@codesandbox/sandpack-react": "^2.20.0",
+    "@codesandbox/sandpack-themes": "^2.0.21",
     "@google/genai": "^2.10.0",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.4.0",
