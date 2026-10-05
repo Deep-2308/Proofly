@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BadgeCheck, Brain, Briefcase, Code2, Globe, Github, Sparkles } from "lucide-react";
+import { BadgeCheck, Brain, Briefcase, Code2, Globe, Sparkles } from "lucide-react";
 import type { PublicProfile } from "@/lib/profile";
 
 interface ProfileExperienceProps {
@@ -53,7 +53,7 @@ export function ProfileExperience({ profile, isOwn }: ProfileExperienceProps) {
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
               {user.githubUrl && (
                 <a href={user.githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-text-muted hover:text-text transition-colors">
-                  <Github className="w-5 h-5" /> GitHub
+                  <Code2 className="w-5 h-5" /> GitHub
                 </a>
               )}
               {user.portfolioUrl && (

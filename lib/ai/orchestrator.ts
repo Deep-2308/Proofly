@@ -8,7 +8,7 @@ import { parseAIResponse } from "./parse";
 import { logAIMetrics } from "./metrics";
 
 export interface AIOrchestratorRequest<T> {
-  task: "challenge-generation" | "evaluation" | "project-analysis";
+  task: "challenge-generation" | "evaluation" | "project-analysis" | "interview-turn" | "interview-report";
   request: {
     systemPrompt: string;
     userPrompt: string;

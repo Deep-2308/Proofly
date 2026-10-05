@@ -38,8 +38,16 @@ export const aiConfig = {
           thinking: getEnvBool("GEMINI_EVALUATION_THINKING", false),
         },
         "project-analysis": {
-          model: getEnvStr("GEMINI_PROJECT_ANALYSIS_MODEL", "gemini-2.5-pro"),
+          model: getEnvStr("GEMINI_PROJECT_ANALYSIS_MODEL", "gemini-2.5-flash"),
           thinking: getEnvBool("GEMINI_PROJECT_ANALYSIS_THINKING", false),
+        },
+        "interview-turn": {
+          model: getEnvStr("GEMINI_INTERVIEW_TURN_MODEL", "gemini-2.5-flash"),
+          thinking: getEnvBool("GEMINI_INTERVIEW_TURN_THINKING", false),
+        },
+        "interview-report": {
+          model: getEnvStr("GEMINI_INTERVIEW_REPORT_MODEL", "gemini-2.5-flash"),
+          thinking: getEnvBool("GEMINI_INTERVIEW_REPORT_THINKING", false),
         },
       },
       // Global Gemini settings

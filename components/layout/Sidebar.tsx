@@ -11,6 +11,7 @@ import {
   User,
   Plus,
   LogOut,
+  Mic,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +36,7 @@ function Logo({ className }: { className?: string }) {
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Prove a Skill", href: "/skills/prove", icon: Zap },
+  { label: "Mock Interviews", href: "/interviews/new", icon: Mic },
   { label: "Discover Projects", href: "/projects/discover", icon: Compass },
 ];
 
