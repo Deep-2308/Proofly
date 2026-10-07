@@ -123,19 +123,19 @@ export function InterviewRoom({ initialData }: { initialData: InterviewData }) {
       // It's safer to just fetch the whole fresh interview state
       const freshRes = await fetch(`/api/interviews/${data.id}`);
       const freshData = await freshRes.json();
-      if (freshRes.ok && freshData.data?.interview) {
-        setData(freshData.data.interview);
+      if (freshRes.ok && freshData.interview) {
+        setData(freshData.interview);
       }
 
-      if (result.data.isComplete) {
+      if (result.isComplete) {
         setProcessing(true);
         setProcessingState("Preparing your next question...");
         // Call the complete API to generate the final report
         await fetch(`/api/interviews/${data.id}/complete`, { method: "POST" });
         router.push(`/interviews/${data.id}/report`);
-      } else if (result.data.spokenText) {
+      } else if (result.spokenText) {
         // Speak the AI's response
-        speak(result.data.spokenText);
+        speak(result.spokenText);
       }
 
     } catch (err) {

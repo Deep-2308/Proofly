@@ -3,7 +3,7 @@ import { z } from "zod";
 export const interviewTurnResponseSchema = z.object({
   nextQuestion: z.string().min(10),
   spokenText: z.string().min(10),
-  internalEvaluationOfLastAnswer: z.number().min(0).max(100).optional(),
+  internalEvaluationOfLastAnswer: z.number().min(0).max(100).nullable().optional(),
   isComplete: z.boolean(),
 });
 
@@ -58,7 +58,7 @@ Respond ONLY with valid JSON matching this schema:
 {
   "nextQuestion": string,
   "spokenText": string,
-  "internalEvaluationOfLastAnswer": number | undefined,
+  "internalEvaluationOfLastAnswer": number | null,
   "isComplete": boolean
 }`;
 }
