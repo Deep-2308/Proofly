@@ -136,7 +136,7 @@ export function BadgeCard({
 
         {/* BADGE SUMMARY */}
         <p className="mb-4 line-clamp-3 text-[13px] italic leading-relaxed text-text-muted">
-          "{badgeSummary}"
+          &ldquo;{badgeSummary}&rdquo;
         </p>
 
         {/* BOTTOM */}

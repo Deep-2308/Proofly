@@ -129,7 +129,7 @@ export async function POST(
     });
 
     // 6. Persist Internal Evaluation & New Turn
-    if (interview.turns.length > 0 && aiResponse.internalEvaluationOfLastAnswer !== undefined) {
+    if (interview.turns.length > 0 && aiResponse.internalEvaluationOfLastAnswer !== undefined && aiResponse.internalEvaluationOfLastAnswer !== null) {
       interview.turns[interview.turns.length - 1].evaluatedScore = aiResponse.internalEvaluationOfLastAnswer;
     }
 

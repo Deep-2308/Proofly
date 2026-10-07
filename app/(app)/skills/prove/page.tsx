@@ -114,9 +114,12 @@ function ProveSkillsInner() {
   // domain; otherwise clear the selection (also resets when the domain
   // changes as the session hydrates).
   useEffect(() => {
-    setSelectedSkill(
-      skillParam && skills.includes(skillParam) ? skillParam : null
-    );
+    const timer = setTimeout(() => {
+      setSelectedSkill(
+        skillParam && skills.includes(skillParam) ? skillParam : null
+      );
+    }, 0);
+    return () => clearTimeout(timer);
   }, [domain, skillParam, skills]);
 
   // Auto-generate once when deep-linked with ?auto=1 (the "Try again" flow).
@@ -133,9 +136,11 @@ function ProveSkillsInner() {
   useEffect(() => {
     if (!challenge || rightState !== "challenge") return;
 
-    setRevealedTitle("");
-    setBodyRevealed(false);
-    setStreamDone(false);
+    const initialTimer = setTimeout(() => {
+      setRevealedTitle("");
+      setBodyRevealed(false);
+      setStreamDone(false);
+    }, 0);
 
     let i = 0;
     const title = challenge.title;
@@ -148,7 +153,10 @@ function ProveSkillsInner() {
       }
     }, TITLE_SPEED);
 
-    return () => clearInterval(titleTimer);
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(titleTimer);
+    };
   }, [challenge, rightState]);
 
   // ─── Generate ────────────────────────────────────────────────────────────────
@@ -455,7 +463,9 @@ function StreamingParagraph({
 
   useEffect(() => {
     if (!active) return;
-    setShown("");
+    const initialTimer = setTimeout(() => {
+      setShown("");
+    }, 0);
     completedRef.current = false;
 
     let i = 0;
@@ -471,7 +481,10 @@ function StreamingParagraph({
       }
     }, speed);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(timer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text, active, speed]);
 

@@ -62,7 +62,7 @@ export function ScoreRing({
   useEffect(() => {
     if (reduceMotion) {
       progress.set(score);
-      setDisplay(score);
+      setTimeout(() => setDisplay(score), 0);
       return;
     }
     const controls = animate(progress, score, {

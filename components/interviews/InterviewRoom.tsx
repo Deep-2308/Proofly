@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Mic, Square, Check, Loader2, Volume2, AlertCircle, RefreshCw } from "lucide-react";
+import { Mic, Square, Check, Loader2, Volume2, AlertCircle } from "lucide-react";
 import { useMediaRecorder } from "@/hooks/useMediaRecorder";
 import { useSpeechSynthesis } from "@/hooks/useSpeechSynthesis";
 
@@ -38,11 +38,57 @@ export function InterviewRoom({ initialData }: { initialData: InterviewData }) {
   const isSubmitting = useRef(false);
   const hasInitialized = useRef(false);
 
+  const submitTurn = async (audioBlob: Blob | null) => {
+    if (isSubmitting.current) return;
+    isSubmitting.current = true;
+    setProcessing(true);
+    if (audioBlob) setProcessingState("Thinking...");
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      if (audioBlob) {
+        formData.append("audio", audioBlob, "audio.webm");
+      }
+      formData.append("turnIndex", String(data.turns.length));
+
+      const res = await fetch(`/api/interviews/${data.id}/turn`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.error || "Failed to process turn.");
+      }
+
+      const freshRes = await fetch(`/api/interviews/${data.id}`);
+      const freshData = await freshRes.json();
+      if (freshRes.ok && freshData.interview) {
+        setData(freshData.interview);
+      }
+
+      if (result.isComplete) {
+        setProcessing(true);
+        setProcessingState("Preparing your next question...");
+        await fetch(`/api/interviews/${data.id}/complete`, { method: "POST" });
+        router.push(`/interviews/${data.id}/report`);
+      } else if (result.spokenText) {
+        speak(result.spokenText);
+      }
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setProcessing(false);
+      isSubmitting.current = false;
+    }
+  };
+
   useEffect(() => {
     if (data.status === "completed") {
       router.replace(`/interviews/${data.id}/report`);
     } else if (data.status === "setup" && !hasInitialized.current) {
-      // Auto-trigger the first turn to generate the first question
       hasInitialized.current = true;
       submitTurn(null);
     }
@@ -95,56 +141,7 @@ export function InterviewRoom({ initialData }: { initialData: InterviewData }) {
     await submitTurn(audioBlob);
   };
 
-  const submitTurn = async (audioBlob: Blob | null) => {
-    if (isSubmitting.current) return;
-    isSubmitting.current = true;
-    setProcessing(true);
-    if (audioBlob) setProcessingState("Thinking...");
-    setError(null);
 
-    try {
-      const formData = new FormData();
-      if (audioBlob) {
-        formData.append("audio", audioBlob, "audio.webm");
-      }
-      formData.append("turnIndex", String(data.turns.length));
-
-      const res = await fetch(`/api/interviews/${data.id}/turn`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await res.json();
-      if (!res.ok) {
-        throw new Error(result.error || "Failed to process turn.");
-      }
-
-      // Update local state by fetching fresh data, or just appending manually. 
-      // It's safer to just fetch the whole fresh interview state
-      const freshRes = await fetch(`/api/interviews/${data.id}`);
-      const freshData = await freshRes.json();
-      if (freshRes.ok && freshData.interview) {
-        setData(freshData.interview);
-      }
-
-      if (result.isComplete) {
-        setProcessing(true);
-        setProcessingState("Preparing your next question...");
-        // Call the complete API to generate the final report
-        await fetch(`/api/interviews/${data.id}/complete`, { method: "POST" });
-        router.push(`/interviews/${data.id}/report`);
-      } else if (result.spokenText) {
-        // Speak the AI's response
-        speak(result.spokenText);
-      }
-
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
-    } finally {
-      setProcessing(false);
-      isSubmitting.current = false;
-    }
-  };
 
   if (data.status === "completed") {
     return (

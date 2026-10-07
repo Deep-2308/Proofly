@@ -131,7 +131,8 @@ export default function ProjectDetailPage() {
   }, [id]);
 
   useEffect(() => {
-    load();
+    const timer = setTimeout(() => load(), 0);
+    return () => clearTimeout(timer);
   }, [load]);
 
   const isOwner = useMemo(

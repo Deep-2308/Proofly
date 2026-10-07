@@ -49,6 +49,10 @@ export const aiConfig = {
           model: getEnvStr("GEMINI_INTERVIEW_REPORT_MODEL", "gemini-2.5-flash"),
           thinking: getEnvBool("GEMINI_INTERVIEW_REPORT_THINKING", false),
         },
+        "portfolio-generation": {
+          model: getEnvStr("GEMINI_PORTFOLIO_MODEL", "gemini-2.5-pro"),
+          thinking: getEnvBool("GEMINI_PORTFOLIO_THINKING", true),
+        },
       },
       // Global Gemini settings
       temperature: getEnvInt("GEMINI_TEMPERATURE", 0.7),

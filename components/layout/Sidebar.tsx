@@ -12,6 +12,7 @@ import {
   Plus,
   LogOut,
   Mic,
+  FileText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -38,6 +39,7 @@ const navItems = [
   { label: "Prove a Skill", href: "/skills/prove", icon: Zap },
   { label: "Mock Interviews", href: "/interviews/new", icon: Mic },
   { label: "Discover Projects", href: "/projects/discover", icon: Compass },
+  { label: "Portfolio", href: "/portfolio", icon: FileText },
 ];
 
 function getInitials(name: string | null | undefined): string {

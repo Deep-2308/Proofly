@@ -9,7 +9,7 @@ export function useSpeechSynthesis() {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       synthRef.current = window.speechSynthesis;
     } else {
-      setIsSupported(false);
+      setTimeout(() => setIsSupported(false), 0);
     }
   }, []);
 

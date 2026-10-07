@@ -156,7 +156,8 @@ export default function WorkspacePage() {
   }, [id]);
 
   useEffect(() => {
-    load();
+    const timer = setTimeout(() => load(), 0);
+    return () => clearTimeout(timer);
   }, [load]);
 
   // member lookup: owner + members, keyed by user id

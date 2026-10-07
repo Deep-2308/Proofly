@@ -8,7 +8,7 @@ import { parseAIResponse } from "./parse";
 import { logAIMetrics } from "./metrics";
 
 export interface AIOrchestratorRequest<T> {
-  task: "challenge-generation" | "evaluation" | "project-analysis" | "interview-turn" | "interview-report";
+  task: "challenge-generation" | "evaluation" | "project-analysis" | "interview-turn" | "interview-report" | "portfolio-generation";
   request: {
     systemPrompt: string;
     userPrompt: string;
@@ -46,6 +46,7 @@ export async function runAICompletion<T>(params: AIOrchestratorRequest<T>): Prom
     
     const thinkingEnabled = providerName === "gemini" ? taskConfig.thinking : false;
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const providerConfig = aiConfig[providerName as keyof typeof aiConfig] as any;
 
     // Retry exactly once for transient errors per provider

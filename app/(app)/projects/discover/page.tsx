@@ -71,7 +71,7 @@ export default function DiscoverProjectsPage() {
   // Fetch projects on load and whenever the skill / status filter changes.
   useEffect(() => {
     let active = true;
-    setLoading(true);
+    const timer = setTimeout(() => { if (active) setLoading(true); }, 0);
 
     const params = new URLSearchParams({ status, limit: "48" });
     if (skill) params.set("skill", skill);
