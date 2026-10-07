@@ -28,7 +28,7 @@ export default function PortfolioBuilderPage() {
       const res = await fetch("/api/portfolio");
       if (res.ok) {
         const data = await res.json();
-        setPortfolio(data.data.portfolio);
+        setPortfolio(data.portfolio);
       }
     } catch (error) {
       console.error(error);
@@ -49,7 +49,7 @@ export default function PortfolioBuilderPage() {
       const res = await fetch("/api/portfolio/generate", { method: "POST" });
       if (res.ok) {
         const data = await res.json();
-        setPortfolio(data.data.portfolio);
+        setPortfolio(data.portfolio);
       } else {
         alert("Failed to generate portfolio. Please try again.");
       }

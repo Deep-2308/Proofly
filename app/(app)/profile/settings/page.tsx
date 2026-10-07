@@ -21,6 +21,7 @@ function getInitials(name?: string) {
 export default function ProfileSettingsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [userData, setUserData] = useState<any>(null);
 
   const {
@@ -69,6 +70,7 @@ export default function ProfileSettingsPage() {
     };
   }, [reset]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
     setIsSaving(true);
     try {
@@ -85,6 +87,7 @@ export default function ProfileSettingsPage() {
 
       setUserData(json.user);
       toast.success("Profile updated");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error(err.message || "An unexpected error occurred.");
     } finally {

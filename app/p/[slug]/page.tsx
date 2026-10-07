@@ -4,7 +4,8 @@ import dbConnect from "@/lib/mongodb";
 import Portfolio from "@/models/Portfolio";
 import { Globe, ShieldCheck, ExternalLink, Code2, Briefcase } from "lucide-react";
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   await dbConnect();
   const portfolio = await Portfolio.findOne({ slug: params.slug, isPublic: true }).lean();
   
@@ -24,7 +25,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function PublicPortfolioPage({ params }: { params: { slug: string } }) {
+export default async function PublicPortfolioPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   await dbConnect();
   const portfolio = await Portfolio.findOne({ slug: params.slug, isPublic: true }).lean();
 

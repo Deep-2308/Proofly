@@ -30,11 +30,11 @@ export const aiConfig = {
       timeoutMs: getEnvInt("GEMINI_TIMEOUT_MS", 20000),
       tasks: {
         "challenge-generation": {
-          model: getEnvStr("GEMINI_GENERATION_MODEL", "gemini-2.5-pro"),
-          thinking: getEnvBool("GEMINI_GENERATION_THINKING", true),
+          model: getEnvStr("GEMINI_GENERATION_MODEL", "gemini-2.5-flash"),
+          thinking: getEnvBool("GEMINI_GENERATION_THINKING", false),
         },
         evaluation: {
-          model: getEnvStr("GEMINI_EVALUATION_MODEL", "gemini-2.5-pro"),
+          model: getEnvStr("GEMINI_EVALUATION_MODEL", "gemini-2.5-flash"),
           thinking: getEnvBool("GEMINI_EVALUATION_THINKING", false),
         },
         "project-analysis": {
@@ -50,8 +50,8 @@ export const aiConfig = {
           thinking: getEnvBool("GEMINI_INTERVIEW_REPORT_THINKING", false),
         },
         "portfolio-generation": {
-          model: getEnvStr("GEMINI_PORTFOLIO_MODEL", "gemini-2.5-pro"),
-          thinking: getEnvBool("GEMINI_PORTFOLIO_THINKING", true),
+          model: getEnvStr("GEMINI_PORTFOLIO_MODEL", "gemini-2.5-flash"),
+          thinking: getEnvBool("GEMINI_PORTFOLIO_THINKING", false),
         },
       },
       // Global Gemini settings
